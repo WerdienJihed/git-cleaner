@@ -234,6 +234,36 @@ function Clear-Folder {
     Write-Host "`nCleaning completed! Removed $removedCount items." -ForegroundColor Green
 }
 
+function Show-CommandHelp {
+    param([string]$Command)
+    
+    switch ($Command) {
+        'af' {
+            Write-Host "Add-Folder: Add a folder to the cleaning configuration" -ForegroundColor Cyan
+            Write-Host "Usage: gitcleaner af -Path <folder_path>" -ForegroundColor White
+            Write-Host "Aliases: -p for -Path" -ForegroundColor White
+            Write-Host "If no path provided, prompts for input." -ForegroundColor White
+        }
+        'cf' {
+            Write-Host "Clear-Folder: Clean all configured folders by removing target directories" -ForegroundColor Cyan
+            Write-Host "Usage: gitcleaner cf [-Force]" -ForegroundColor White
+            Write-Host "Options: -f or -Force to skip confirmation" -ForegroundColor White
+        }
+        'gf' {
+            Write-Host "Get-Folders: List all configured folders" -ForegroundColor Cyan
+            Write-Host "Usage: gitcleaner gf" -ForegroundColor White
+        }
+        'rf' {
+            Write-Host "Remove-Folder: Remove a folder from the configuration" -ForegroundColor Cyan
+            Write-Host "Usage: gitcleaner rf -Path <folder_path>" -ForegroundColor White
+            Write-Host "Aliases: -p for -Path" -ForegroundColor White
+        }
+        default {
+            Write-Host "Unknown command: $Command" -ForegroundColor Red
+        }
+    }
+}
+
 # CLI Logic
 if ($args.Count -eq 0 -or $args[0] -eq '--help' -or $args[0] -eq '-h') {
     Write-Host "Git Cleaner CLI Tool" -ForegroundColor Cyan
@@ -259,11 +289,40 @@ if ($args.Count -eq 0 -or $args[0] -eq '--help' -or $args[0] -eq '-h') {
 $command = $args[0]
 $remainingArgs = if ($args.Count -gt 1) { $args[1..($args.Count-1)] } else { @() }
 
+if ($remainingArgs -and ($remainingArgs[0] -eq '--help' -or $remainingArgs[0] -eq '-h')) {
+    Show-CommandHelp $command
+    exit
+}
+
 switch ($command) {
-    'af' { Add-Folder @remainingArgs }
-    'cf' { Clear-Folder @remainingArgs }
-    'gf' { Get-Folders }
-    'rf' { Remove-Folder @remainingArgs }
+    'af' { 
+        if ($remainingArgs -contains '--help' -or $remainingArgs -contains '-h') {
+            Show-CommandHelp 'af'
+        } else {
+            Add-Folder @remainingArgs 
+        }
+    }
+    'cf' { 
+        if ($remainingArgs -contains '--help' -or $remainingArgs -contains '-h') {
+            Show-CommandHelp 'cf'
+        } else {
+            Clear-Folder @remainingArgs 
+        }
+    }
+    'gf' { 
+        if ($remainingArgs -contains '--help' -or $remainingArgs -contains '-h') {
+            Show-CommandHelp 'gf'
+        } else {
+            Get-Folders 
+        }
+    }
+    'rf' { 
+        if ($remainingArgs -contains '--help' -or $remainingArgs -contains '-h') {
+            Show-CommandHelp 'rf'
+        } else {
+            Remove-Folder @remainingArgs 
+        }
+    }
     default { 
         Write-Host "Unknown command: $command" -ForegroundColor Red
         Write-Host "Run 'gitcleaner --help' for usage information." -ForegroundColor Yellow

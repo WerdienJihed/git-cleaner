@@ -235,7 +235,7 @@ function Clear-Folder {
 }
 
 # CLI Logic
-if ($args.Count -eq 0) {
+if ($args.Count -eq 0 -or $args[0] -eq '--help' -or $args[0] -eq '-h') {
     Write-Host "Git Cleaner CLI Tool" -ForegroundColor Cyan
     Write-Host "Usage: gitcleaner <command> [options]" -ForegroundColor White
     Write-Host ""
@@ -244,6 +244,9 @@ if ($args.Count -eq 0) {
     Write-Host "  cf  Clear-Folder   - Clean configured folders"
     Write-Host "  gf  Get-Folders    - List configured folders"
     Write-Host "  rf  Remove-Folder  - Remove a folder from config"
+    Write-Host ""
+    Write-Host "Options:" -ForegroundColor Yellow
+    Write-Host "  --help, -h         - Show this help message"
     Write-Host ""
     Write-Host "Examples:" -ForegroundColor Yellow
     Write-Host "  gitcleaner af -Path 'C:\Projects'"
@@ -263,6 +266,6 @@ switch ($command) {
     'rf' { Remove-Folder @remainingArgs }
     default { 
         Write-Host "Unknown command: $command" -ForegroundColor Red
-        Write-Host "Run 'gitcleaner' without arguments to see available commands." -ForegroundColor Yellow
+        Write-Host "Run 'gitcleaner --help' for usage information." -ForegroundColor Yellow
     }
 }

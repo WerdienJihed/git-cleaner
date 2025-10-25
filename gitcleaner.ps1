@@ -2,7 +2,7 @@
 # This script provides a command-line interface for managing Git repository cleaning.
 
 # Configuration paths
-$configDir = "$env:USERPROFILE\Documents\git-cleaner"
+$configDir = "$PSScriptRoot\config"
 $configPath = "$configDir\config.json"
 
 # Function definitions

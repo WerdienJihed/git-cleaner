@@ -52,7 +52,7 @@ gitcleaner rf -Path "C:\Projects"
 
 ## Configuration
 
-The tool stores configuration in `~\Documents\git-cleaner\config.json`, which includes:
+The tool stores configuration in a `config` subfolder next to the script (e.g., `~\bin\config\config.json` if installed in `~\bin\`), which includes:
 
 - `folders`: List of directories to scan for Git repos
 - `targets`: List of directories/files to clean (e.g., node_modules, dist, etc.)
